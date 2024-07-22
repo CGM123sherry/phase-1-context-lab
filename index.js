@@ -1,4 +1,62 @@
 /* Your Code Here */
+const createEmployeeRecord = function (array) {
+  return {
+    firstName: array[0],
+    familyName: array[1],
+    title: array[2],
+    payPerHour: array[3],
+    timeInEvents: [],
+    timeOutEvents: [],
+  };
+};
+
+const createEmployeeRecords = function (arrays) {
+  return arrays.map(createEmployeeRecord);
+};
+
+const createTimeInEvent = function (dateTime) {
+  const [date, hour] = dateTime.split(" ");
+
+  this.timeInEvents.push({
+    type: "TimeIn",
+    hour: parseInt(hour, 10),
+    date,
+  });
+
+  return this;
+};
+
+const createTimeOutEvent = function (dateTime) {
+  const [date, hour] = dateTime.split(" ");
+
+  this.timeOutEvents.push({
+    type: "TimeOut",
+    hour: parseInt(hour, 10),
+    date,
+  });
+  return this;
+};
+const hoursWorkedOnDate = function (date) {
+  const inEvent = this.timeInEvents.find((e) => e.date === date);
+  const outEvent = this.timeOutEvents.find((e) => e.date === date);
+
+  return (outEvent.hour - inEvent.hour) / 100;
+};
+
+const wagesEarnedOnDate = function (date) {
+  const hours = hoursWorkedOnDate.call(this, date);
+  return hours * this.payPerHour;
+};
+
+const findEmployeeByFirstName = function (srcArray, firstName) {
+  return srcArray.find((record) => record.firstName === firstName);
+};
+
+const calculatePayroll = function (employeeRecords) {
+  return employeeRecords.reduce((memo, record) => {
+    return memo + allWagesFor.call(record);
+  }, 0);
+};
 
 /*
  We're giving you this function. Take a look at it, you might see some usage
@@ -10,14 +68,16 @@
  */
 
 const allWagesFor = function () {
-    const eligibleDates = this.timeInEvents.map(function (e) {
-        return e.date
-    })
+  const eligibleDates = this.timeInEvents.map(function (e) {
+    return e.date;
+  });
 
-    const payable = eligibleDates.reduce(function (memo, d) {
-        return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
+  const payable = eligibleDates.reduce(
+    function (memo, d) {
+      return memo + wagesEarnedOnDate.call(this, d);
+    }.bind(this),
+    0
+  ); // <== Hm, why did we need to add bind() there? We'll discuss soon!
 
-    return payable
-}
-
+  return payable;
+};
